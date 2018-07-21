@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>报名表</title>
+    <!-- 引入 WeUI -->
+    <!-- <link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/1.1.3/weui.min.css"> -->
+
+    <!-- MDL -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+    <!-- jQuery -->
+    <script src="http://cdn.staticfile.org/jquery/2.0.0/jquery.min.js"></script>
+    <!-- Vue.js -->
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+
+    <!-- jQuery 表单验证 -->
+    <!-- <script src="/lib/jquery-validation/jquery.validate.min.js"></script> -->
+    <!-- <script src="/lib/jquery-validation/localization/messages_zh.min.js"></script> -->
+
+    <!-- custom css -->
+    <style>
+    .mdl-layout {
+        align-items: center;
+        /* justify-content: center; */
+    }
+    .mdl-layout__content {
+        padding: 24px;
+        flex: none;
+    }
+    </style>
+</head>
+
+<body ontouchstart>
+    <div class="mdl-layout mdl-js-layout mdl-color--grey-100">
+        <main id="app" class="mdl-layout__content">
+            <div class="mdl-card mdl-shadow--6dp">
+                <div class="mdl-card__title mdl-color--primary mdl-color-text--white">
+                    <h2 class="mdl-card__title-text">私人财富思享会 报名表</h2>
+                </div>
+                <div class="mdl-card__supporting-text">
+                    <form action="#">
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <input class="mdl-textfield__input" type="text" id="name" v-model="name" />
+                            <label class="mdl-textfield__label" for="name">您的姓名（必填）</label>
+                            <span class="mdl-textfield__error">姓名不能为空</span>
+                        </div>
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <input class="mdl-textfield__input" type="text" id="city" v-model="city" />
+                            <label class="mdl-textfield__label" for="city">所在城市</label>
+                        </div>
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <input class="mdl-textfield__input" type="text" id="occupation" v-model="occupation" />
+                            <label class="mdl-textfield__label" for="occupation">职业</label>
+                        </div>
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <input class="mdl-textfield__input" type="text" pattern="^1[0-9]{10}$" id="phone" v-model="phone" />
+                            <label class="mdl-textfield__label" for="phone">手机号（必填）</label>
+                            <span class="mdl-textfield__error">手机号必须是11位数字</span>
+                        </div>
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <input class="mdl-textfield__input" type="text" pattern="^[a-zA-Z\d_]{5,}$" id="wechat" v-model="wechat" />
+                            <label class="mdl-textfield__label" for="wechat">微信号（必填）</label>
+                            <span class="mdl-textfield__error">微信号格式不正确</span>
+                        </div>
+                        <div class="mdl-textfield mdl-js-textfield">
+                            <input class="mdl-textfield__input" type="text" id="referrer" v-model="referrer" />
+                            <label class="mdl-textfield__label" for="referrer">推荐人</label>
+                        </div>
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <h6>请选择您想参加哪个城市的思享会？</h6>
+                            <select class="mdl-textfield__input" id="location" v-model="location">
+                                <option></option>
+                                <option value="南京">南京</option>
+                                <option value="杭州">杭州</option>
+                                <option value="深圳">深圳</option>
+                                <option value="广州佛山">广州/佛山</option>
+                                <option value="青岛">青岛</option>
+                                <option value="北京">北京</option>
+                                <option value="上海">上海</option>
+                            </select>
+                            <label class="mdl-textfield__label" for="location">{{ location }}</label>
+                        </div>
+                    </form>
+                </div>
+                <div class="mdl-card__actions mdl-card--border">
+                    <button v-on:click="register" id="show-toast" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">提交</button>
+                </div>
+            </div>
+            <div>
+                <div id="validation-error" class="mdl-js-snackbar mdl-snackbar">
+                    <div class="mdl-snackbar__text"></div>
+                    <button class="mdl-snackbar__action" type="button"></button>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+
+<script type="text/javascript">
+    const app = new Vue({
+        el: '#app',
+        data: {
+            name: null,
+            city: null,
+            occupation: null,
+            phone: null,
+            wechat: null,
+            referrer: null,
+            location: null,
+        },
+        methods: {
+            register: function (event) {
+                const snackbarContainer = document.querySelector('#validation-error')
+                const showToastButton = document.querySelector('#show-toast')
+
+                const phoneReg = /^1[0-9]{10}$/
+                const isPhoneValid = phoneReg.test(this.phone)
+
+                const wechatReg = /^[a-zA-Z\d_]{5,}$/
+                const isWechatValid = wechatReg.test(this.wechat)
+
+                if (!this.name) {
+                    snackbarContainer.MaterialSnackbar.showSnackbar({message: '姓名不能为空'})
+                } else if (!isPhoneValid) {
+                    snackbarContainer.MaterialSnackbar.showSnackbar({message: '手机号必须是11位数字'})
+                } else if (!isWechatValid) {
+                    snackbarContainer.MaterialSnackbar.showSnackbar({message: '微信号格式不正确'})
+                } else if (!this.location) {
+                    snackbarContainer.MaterialSnackbar.showSnackbar({message: '请选择参加思享会城市'})
+                } else {
+                    const payload = {
+                        name: this.name,
+                        city: this.city,
+                        occupation: this.occupation,
+                        phone: this.phone,
+                        wechat: this.wechat,
+                        referrer: this.referrer,
+                        location: this.location,
+                    }
+
+                    $.ajax({
+                        type: "post",
+                        url: '/register',
+                        dataType: "json",
+                        contentType: 'application/json',
+                        data: JSON.stringify(payload),
+                        success: function (response) {
+                            console.log(response)
+                            if (response.status === "success") {
+                                snackbarContainer.MaterialSnackbar.showSnackbar({message: '报名成功'})
+                            } else if (response.status === "error") {
+                                snackbarContainer.MaterialSnackbar.showSnackbar({message: response.error})
+                            }
+                        }
+                    })
+                }
+            }
+        }
+    })
+</script>
+</html>

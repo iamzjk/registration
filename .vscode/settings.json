@@ -1,0 +1,12 @@
+{
+    "python.pythonPath": "/usr/local/opt/python/bin/python3.7",
+    "[python]": {
+        "editor.tabSize": 4
+    },
+    // "[html]": {
+    //     "editor.tabSize": 2
+    // },
+    // "[javascript]": {
+    //     "editor.tabSize": 2
+    // }
+}
