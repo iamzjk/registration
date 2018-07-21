@@ -1,25 +1,19 @@
 <!DOCTYPE html>
-<html lang="zh-cmn-Hans">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
     <title>报名表</title>
-    <!-- 引入 WeUI -->
-    <!-- <link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/1.1.3/weui.min.css"> -->
 
     <!-- MDL -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
-    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"> -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.bootcss.com/material-design-lite/1.3.0/material.indigo-pink.min.css">
+    <script src="https://cdn.bootcss.com/material-design-lite/1.3.0/material.min.js"></script>
 
     <!-- jQuery -->
-    <script src="http://cdn.staticfile.org/jquery/2.0.0/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
     <!-- Vue.js -->
-    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
-
-    <!-- jQuery 表单验证 -->
-    <!-- <script src="/lib/jquery-validation/jquery.validate.min.js"></script> -->
-    <!-- <script src="/lib/jquery-validation/localization/messages_zh.min.js"></script> -->
+    <script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.min.js"></script>
 
     <!-- custom css -->
     <style>
@@ -101,7 +95,7 @@
 </body>
 
 <script type="text/javascript">
-    const app = new Vue({
+    var app = new Vue({
         el: '#app',
         data: {
             name: null,
@@ -114,8 +108,8 @@
         },
         methods: {
             register: function (event) {
-                const snackbarContainer = document.querySelector('#validation-error')
-                const showToastButton = document.querySelector('#show-toast')
+                var snackbarContainer = document.querySelector('#validation-error')
+                var showToastButton = document.querySelector('#show-toast')
 
                 const phoneReg = /^1[0-9]{10}$/
                 const isPhoneValid = phoneReg.test(this.phone)
