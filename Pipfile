@@ -8,6 +8,8 @@ flask = "*"
 pymongo = "*"
 wtforms = "*"
 pandas = "*"
+gunicorn = "*"
+gevent = "*"
 
 [dev-packages]
 
