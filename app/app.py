@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 import os
+import datetime
 
-from flask import Flask, jsonify, request, render_template, make_response
+import pandas as pd
+from flask import Flask, jsonify, request, render_template, make_response, Response
 from pymongo import MongoClient
 
 app = Flask(__name__)
@@ -17,10 +19,11 @@ def index():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
 
-    # data = list(mongo.stock_trader.sp500.find({}, {'_id': 0}).limit(5))
     data = request.json
-    if has_registed_before(data):
+    if _has_registed_before(data):
         return jsonify({'status': 'error', 'data': data, 'error': '您已经报名过了，请不要重复提交'})
+    
+    data['timestamp'] = datetime.datetime.utcnow()
     registration_id = mongo.stock_trader.registration.insert_one(data).inserted_id
 
     data['_id'] = str(registration_id)
@@ -28,7 +31,21 @@ def register():
     return jsonify({'status': 'success', 'data': data})
 
 
-def has_registed_before(data):
+@app.route("/download_csv")
+def download_csv():
+    
+    registrations = list(mongo.stock_trader.registration.find())
+    df = pd.DataFrame(registrations)
+    csv = df.to_csv(encoding='utf-8')
+
+    return Response(
+        csv,
+        mimetype="text/csv",
+        headers={"Content-disposition":
+                 "attachment; filename=registrations.csv"})
+
+
+def _has_registed_before(data):
 
     from_db = list(mongo.stock_trader.registration.find({
         'name': data['name'],

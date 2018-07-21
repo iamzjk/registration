@@ -6,12 +6,10 @@ name = "pypi"
 [packages]
 flask = "*"
 pymongo = "*"
-flask-wtf = "*"
 wtforms = "*"
+pandas = "*"
 
 [dev-packages]
-pylint = "*"
-"pep8" = "*"
 
 [requires]
 python_version = "3.7"
